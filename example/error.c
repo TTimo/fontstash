@@ -91,7 +91,6 @@ static void key(GLFWwindow* window, int key, int scancode, int action, int mods)
 
 void stashError(void* uptr, int error, int val)
 {
-	(void)uptr;
 	FONScontext* stash = (FONScontext*)uptr;
 	switch (error) {
 	case FONS_ATLAS_FULL:
@@ -229,7 +228,11 @@ int main()
 		fonsDrawText(fs, 20, height-20,"Press UP / DOWN keys to change font size and to trigger atlas full callback, R to reset atlas, E to expand atlas.",NULL);
 
 		fonsGetAtlasSize(fs, &atlasw, &atlash);
-		snprintf(msg, sizeof(msg), "Atlas: %d × %d", atlasw, atlash);
+#ifdef _MSC_VER
+		_snprintf(msg, sizeof(msg), "Atlas: %d × %d", atlasw, atlash);
+#else
+        snprintf(msg, sizeof(msg), "Atlas: %d × %d", atlasw, atlash);
+#endif
 		fonsDrawText(fs, 20, height-50, msg, NULL);
 
 		fonsDrawDebug(fs, width - atlasw - 20, 20.0);
